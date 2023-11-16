@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en" style="background-color: #AAAAAA">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>Smart Traffic Lights</title>
+    <link rel="icon" type="image/x-icon" href="img/favicon.ico">
+    <script src="https://unpkg.com/ml5@latest/dist/ml5.min.js" type="text/javascript"></script>
+    <script src="main.js"></script>
+    <style>
+        table {
+            table-layout: fixed;
+            border-collapse: collapse;
+            /*border: 1px solid black;*/
+        }
+        th,td {
+            /*border: 1px solid black;*/
+        }
+        .lights {
+            position: relative;
+            top: 0;
+            left: 0;
+        }
+        .red_h, .red_v {
+            position: relative;
+            top: 0;
+            left: 0;
+        }
+        .yellow_h, .yellow_v {
+            position: absolute;
+            top: 0;
+            left: 0;
+        }
+        .green_h, .green_v {
+            position: absolute;
+            top: 0;
+            left: 0;
+        }
+    </style>
+</head>
+<body>
+    <table>
+        <tr>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td><img style="display:block;" width="100%" src="img/road_sn.png" alt=""/></td>
+            <td></td>
+            <td></td>
+            <td></td>
+        </tr>
+        <tr>
+            <td></td>
+            <td>
+                <div style="position: absolute">
+                    <span><strong>Vehicle amount</strong></span><br><br>
+                    <span>North traffic:</span> <label id="north-traffic-label"></label><br>
+                    <span>South traffic:</span> <label id="south-traffic-label"></label><br>
+                    <span>East traffic:</span> <label id="east-traffic-label"></label><br>
+                    <span>West traffic:</span> <label id="west-traffic-label"></label>
+                </div>
+            </td>
+            <td></td>
+            <td><img style="display:block; cursor: pointer" width="100%" id="north-traffic" src="img/normal_traffic.jpg" alt=""/></td>
+            <td></td>
+            <td>
+                <div style="position: absolute">
+                    <span><strong>Traffic status</strong></span><br><br>
+                    <span>N↔S:</span> <label id="north-south-status-label"></label><br>
+                    <span>E↔W:</span> <label id="east-west-status-label"></label><br>
+                    <span>N↔S green duration:</span> <label id="ns-duration-label"></label><br>
+                    <span>E↔W green duration:</span> <label id="ew-duration-label"></label>
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td>
+                <div class="lights">
+                    <img style="display:block;" width="100%" class="red_h" src="img/red_h.png" alt=""/>
+                    <img style="display:block;" width="100%" class="yellow_h" src="img/yellow_h.png" alt=""/>
+                    <img style="display:block;" width="100%" class="green_h" src="img/green_h.png" alt=""/>
+                </div>
+            </td>
+            <td></td>
+            <td></td>
+            <td></td>
+        </tr>
+        <tr>
+            <td><img style="display:block;" width="100%" src="img/road_we.png" alt=""/></td>
+            <td><img style="display:block; cursor: pointer" width="100%" id="west-traffic" src="img/normal_traffic.jpg" alt=""/></td>
+            <td>
+                <div class="lights">
+                    <img style="display:block;" width="100%" class="red_v" src="img/red_v.png" alt=""/>
+                    <img style="display:block;" width="100%" class="yellow_v" src="img/yellow_v.png" alt=""/>
+                    <img style="display:block;" width="100%" class="green_v" src="img/green_v.png" alt=""/>
+                </div>
+            </td>
+            <td>
+                <div style="height: min-content; display: flex; justify-content: center; align-items: center">
+                    <button style="position: absolute; width: 120px; height: 60px" id="calculate-btn" type="button" onclick="calculate()">Calculate</button>
+                </div>
+            </td>
+            <td>
+                <div class="lights">
+                    <img style="display:block;" width="100%" class="red_v" src="img/red_v.png" alt=""/>
+                    <img style="display:block;" width="100%" class="yellow_v" src="img/yellow_v.png" alt=""/>
+                    <img style="display:block;" width="100%" class="green_v" src="img/green_v.png" alt=""/>
+                </div>
+            </td>
+            <td><img style="display:block; cursor: pointer" width="100%" id="east-traffic" src="img/normal_traffic.jpg" alt=""/></td>
+            <td><img style="display:block;" width="100%" src="img/road_we.png" alt=""/></td>
+        </tr>
+        <tr>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td>
+                <div class="lights">
+                    <img style="display:block;" width="100%" class="red_h" src="img/red_h.png" alt=""/>
+                    <img style="display:block;" width="100%" class="yellow_h" src="img/yellow_h.png" alt=""/>
+                    <img style="display:block;" width="100%" class="green_h" src="img/green_h.png" alt=""/>
+                </div>
+            </td>
+            <td></td>
+            <td></td>
+            <td></td>
+        </tr>
+        <tr>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td><img style="display:block; cursor: pointer" width="100%" id="south-traffic" src="img/normal_traffic.jpg" alt=""/></td>
+            <td></td>
+            <td></td>
+            <td></td>
+        </tr>
+        <tr>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td><img style="display:block;" width="100%" src="img/road_sn.png" alt=""/></td>
+            <td></td>
+            <td></td>
+            <td></td>
+        </tr>
+    </table>
+</body>
+</html>
